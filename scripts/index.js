@@ -28,7 +28,7 @@ const BASE_URL = 'https://www.googleapis.com/youtube/v3/search';
 // 3. Make a getJSON call using the query object and sending the provided callback in as the last argument
 // TEST IT! Execute this function and console log the results inside the callback.
 const fetchVideos = function(searchTerm, callback) {
-  $.getJSON(BASE_URL,
+  return $.getJSON(BASE_URL,
     {
       q: searchTerm,
       key: API_KEY,
@@ -40,7 +40,6 @@ const fetchVideos = function(searchTerm, callback) {
 
 };
 
-fetchVideos('batman', function(response) { console.log(response); });
 
 // TASK:
 // 1. Create a `decorateResponse` function that receives the Youtube API response
@@ -51,18 +50,19 @@ fetchVideos('batman', function(response) { console.log(response); });
 // TEST IT! Grab an example API response and send it into the function - make sure
 // you get back the object you want.
 const decorateResponse = function(response) {
-  response.items.map(function(item) {
-    return [ 
-      {
+  console.log(response);
+  const results = response.items.map(function(item) {
+    return {
         id: item.id.videoId,
         title: item.snippet.title,
         thumbnail: item.snippet.thumbnails.default.url
       }
-    ];
+
   });
+  console.log(results);
 };
 
-fetchVideos('batman', decorateResponse);
+
 
 
 // TASK:
@@ -70,8 +70,27 @@ fetchVideos('batman', decorateResponse);
 // 2. Using the object, return an HTML string containing all the expected data
 // TEST IT!
 const generateVideoItemHtml = function(video) {
+  //console.log(video.id);
+  //const htmlItem = `<p>${video.id}</p>`
+
+  //$('.results').html(htmlItem);
+
+  return `<h3>${video.id}</h3>
+  <li>${video.title}</li>
+  <img src=${video.thumbnail}><img>`
+
 
 };
+
+
+generateVideoItemHtml({
+  //id: "stuff",
+  //title: "more stuff",
+  //thumbnail: "some stuff"
+
+});
+fetchVideos('batman', decorateResponse);
+
 
 // TASK:
 // 1. Create a `addVideosToStore` function that receives an array of decorated video
