@@ -1,3 +1,5 @@
+'use strict';
+
 const API_KEY = 'AIzaSyBVLPcIuJcvy3Z690ya4qpXQo_4Fv_t1GM';
 
 /*
@@ -34,11 +36,11 @@ const fetchVideos = function(searchTerm, callback) {
     },
 
     callback
-  )
+  );
 
 };
 
-fetchVideos('batman', function(response) { console.log(response) });
+fetchVideos('batman', function(response) { console.log(response); });
 
 // TASK:
 // 1. Create a `decorateResponse` function that receives the Youtube API response
@@ -49,8 +51,19 @@ fetchVideos('batman', function(response) { console.log(response) });
 // TEST IT! Grab an example API response and send it into the function - make sure
 // you get back the object you want.
 const decorateResponse = function(response) {
-
+  response.items.map(function(item) {
+    return [ 
+      {
+        id: item.id.videoId,
+        title: item.snippet.title,
+        thumbnail: item.snippet.thumbnails.default.url
+      }
+    ];
+  });
 };
+
+fetchVideos('batman', decorateResponse);
+
 
 // TASK:
 // 1. Create a `generateVideoItemHtml` function that receives the decorated object
