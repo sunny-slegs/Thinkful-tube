@@ -15,8 +15,7 @@ const API_KEY = 'AIzaSyBVLPcIuJcvy3Z690ya4qpXQo_4Fv_t1GM';
 
 */
 const store = {
-  videos: [
-  ]
+  videos: []
 };
 
 // TASK: Add the Youtube Search API Base URL here: https://www.googleapis.com/youtube/v3/search
@@ -29,16 +28,14 @@ const BASE_URL = 'https://www.googleapis.com/youtube/v3/search';
 // 3. Make a getJSON call using the query object and sending the provided callback in as the last argument
 // TEST IT! Execute this function and console log the results inside the callback.
 const fetchVideos = function(searchTerm, callback) {
-  return $.getJSON(BASE_URL,
+ $.getJSON(BASE_URL,
     {
       q: searchTerm,
       key: API_KEY,
       part: 'snippet'
     },
-
     callback
   );
-
 };
 
 
@@ -51,16 +48,13 @@ const fetchVideos = function(searchTerm, callback) {
 // TEST IT! Grab an example API response and send it into the function - make sure
 // you get back the object you want.
 const decorateResponse = function(response) {
-  console.log(response);
-  const results = response.items.map(function(item) {
+  return response.items.map(function(item) {
     return {
-        id: item.id.videoId,
-        title: item.snippet.title,
-        thumbnail: item.snippet.thumbnails.default.url
-      }
-
+      id: item.id.videoId,
+      title: item.snippet.title,
+      thumbnail: item.snippet.thumbnails.default.url
+    };
   });
-  console.log(results);
 };
 
 
@@ -90,7 +84,7 @@ const generateVideoItemHtml = function(video) {
 // TEST IT!
 const addVideosToStore = function(videos) {
   store.videos = videos;
-
+  console.log(store.videos);
 };
 
 
@@ -123,9 +117,24 @@ const render = function() {
 //   g) Inside the callback, run the `render` function
 // TEST IT!
 const handleFormSubmit = function() {
-  
+  $('form').submit(function(event) {
+    event.preventDefault();
+    const searchTerm = $(event.currentTarget)
+      .parent()
+      .find('#search-term')
+      .val();
+    $(event.currentTarget).parent().find('#search-term').val('');
+    fetchVideos(searchTerm, function(response) {
+      console.log(response);
+      let decoratedResponse = decorateResponse(response);
+      console.log(decoratedResponse);
+      addVideosToStore(decoratedResponse);
+      render();
+    });
+  });
 };
 
+handleFormSubmit();
 // When DOM is ready:
 $(function () {
   // TASK:
