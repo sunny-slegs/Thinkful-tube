@@ -15,7 +15,8 @@ const API_KEY = 'AIzaSyBVLPcIuJcvy3Z690ya4qpXQo_4Fv_t1GM';
 
 */
 const store = {
-  videos: []
+  videos: [
+  ]
 };
 
 // TASK: Add the Youtube Search API Base URL here: https://www.googleapis.com/youtube/v3/search
@@ -75,21 +76,12 @@ const generateVideoItemHtml = function(video) {
 
   //$('.results').html(htmlItem);
 
-  return `<h3>${video.id}</h3>
-  <li>${video.title}</li>
-  <img src=${video.thumbnail}><img>`
+  return `<li>${video.title}</li>
+  <li>${video.id}<li>
+  <img src=${video.thumbnail}><img>`;
 
 
 };
-
-
-generateVideoItemHtml({
-  //id: "stuff",
-  //title: "more stuff",
-  //thumbnail: "some stuff"
-
-});
-fetchVideos('batman', decorateResponse);
 
 
 // TASK:
@@ -97,8 +89,10 @@ fetchVideos('batman', decorateResponse);
 // objects and sets the array as the value held in store.videos
 // TEST IT!
 const addVideosToStore = function(videos) {
+  store.videos = videos;
 
 };
+
 
 // TASK:
 // 1. Create a `render` function
@@ -106,8 +100,16 @@ const addVideosToStore = function(videos) {
 // 3. Add your array of DOM elements to the appropriate DOM element
 // TEST IT!
 const render = function() {
-
+  console.log(store.videos);
+  let videoHtmlArray = store.videos.map(function(video) {
+    return generateVideoItemHtml(video);
+  });
+  console.log(videoHtmlArray);
+  const videoHtmlString = videoHtmlArray.join('');
+  console.log(videoHtmlString);
+  $('.results').html(videoHtmlString);
 };
+
 
 // TASK:
 // 1. Create a `handleFormSubmit` function that adds an event listener to the form
@@ -121,7 +123,7 @@ const render = function() {
 //   g) Inside the callback, run the `render` function
 // TEST IT!
 const handleFormSubmit = function() {
-
+  
 };
 
 // When DOM is ready:
