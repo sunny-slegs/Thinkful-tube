@@ -1,10 +1,10 @@
-const API_KEY = 'YOUR_KEY_HERE';
+const API_KEY = 'AIzaSyBVLPcIuJcvy3Z690ya4qpXQo_4Fv_t1GM';
 
 /*
   We want our store to hold a `videos` array of "decorated" objects - i.e. objects that
   have been transformed into just the necessary data to display on our page, compared to the large
   dataset Youtube will deliver to us.  Example object:
-  
+
   {
     id: '98ds8fbsdy67',
     title: 'Cats dancing the Macarena',
@@ -16,9 +16,9 @@ const store = {
   videos: []
 };
 
-// TASK: Add the Youtube Search API Base URL here:
+// TASK: Add the Youtube Search API Base URL here: https://www.googleapis.com/youtube/v3/search
 // Documentation is here: https://developers.google.com/youtube/v3/docs/search/list#usage
-const BASE_URL = '';
+const BASE_URL = 'https://www.googleapis.com/youtube/v3/search';
 
 // TASK:
 // 1. Create a `fetchVideos` function that receives a `searchTerm` and `callback`
@@ -26,14 +26,25 @@ const BASE_URL = '';
 // 3. Make a getJSON call using the query object and sending the provided callback in as the last argument
 // TEST IT! Execute this function and console log the results inside the callback.
 const fetchVideos = function(searchTerm, callback) {
+  $.getJSON(BASE_URL,
+    {
+      q: searchTerm,
+      key: API_KEY,
+      part: 'snippet'
+    },
+
+    callback
+  )
 
 };
+
+fetchVideos('batman', function(response) { console.log(response) });
 
 // TASK:
 // 1. Create a `decorateResponse` function that receives the Youtube API response
 // 2. Map through the response object's `items` array
-// 3. Return an array of objects, where each object contains the keys `id`, `title`, 
-// `thumbnail` which each hold the appropriate values from the API item object. You 
+// 3. Return an array of objects, where each object contains the keys `id`, `title`,
+// `thumbnail` which each hold the appropriate values from the API item object. You
 // WILL have to dig into several nested properties!
 // TEST IT! Grab an example API response and send it into the function - make sure
 // you get back the object you want.
@@ -50,7 +61,7 @@ const generateVideoItemHtml = function(video) {
 };
 
 // TASK:
-// 1. Create a `addVideosToStore` function that receives an array of decorated video 
+// 1. Create a `addVideosToStore` function that receives an array of decorated video
 // objects and sets the array as the value held in store.videos
 // TEST IT!
 const addVideosToStore = function(videos) {
@@ -75,7 +86,7 @@ const render = function() {
 //   d) Invoke the `fetchVideos` function, sending in the search value
 //   e) Inside the callback, send the API response through the `decorateResponse` function
 //   f) Inside the callback, add the decorated response into your store using the `addVideosToStore` function
-//   g) Inside the callback, run the `render` function 
+//   g) Inside the callback, run the `render` function
 // TEST IT!
 const handleFormSubmit = function() {
 
